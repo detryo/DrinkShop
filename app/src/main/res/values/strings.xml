@@ -4,5 +4,6 @@
 
     <string name="FACEBOOK_APP_ID">209836979631532</string>
     <string name="ACCOUNT_KIT_CLIENT_TOKEN">8bd282ae25cd332675b6ffc966669c54</string>
+    <string name="btn_register">Register</string>
 
 </resources>
