@@ -12,5 +12,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="textview_our_popular_products">OUR POPULAR PRODUCTS</string>
 
 </resources>

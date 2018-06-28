@@ -1,6 +1,7 @@
 package com.example.christian.androiddrinkshop.Retrofit;
 
 import com.example.christian.androiddrinkshop.Model.Banner;
+import com.example.christian.androiddrinkshop.Model.Category;
 import com.example.christian.androiddrinkshop.Model.CheckUserResponse;
 import com.example.christian.androiddrinkshop.Model.User;
 
@@ -32,4 +33,7 @@ public interface IDrinkShopAPI {
 
     @GET("getbanner.php")
     io.reactivex.Observable<List<Banner>> getBanners();
+
+    @GET("getmenu.php")
+    io.reactivex.Observable<List<Category>> getMenu();
 }
