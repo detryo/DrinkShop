@@ -3,6 +3,7 @@ package com.example.christian.androiddrinkshop.Retrofit;
 import com.example.christian.androiddrinkshop.Model.Banner;
 import com.example.christian.androiddrinkshop.Model.Category;
 import com.example.christian.androiddrinkshop.Model.CheckUserResponse;
+import com.example.christian.androiddrinkshop.Model.Drink;
 import com.example.christian.androiddrinkshop.Model.User;
 
 import java.util.List;
@@ -26,6 +27,10 @@ public interface IDrinkShopAPI {
                                 @Field("name") String name,
                                 @Field("address") String address,
                                 @Field("birthdate") String birthdate);
+
+    @FormUrlEncoded
+    @POST("getdrink.php")
+    io.reactivex.Observable<List<Drink>> getDrinik(@Field("menuid") String menuID);
 
     @FormUrlEncoded
     @POST("getuser.php")

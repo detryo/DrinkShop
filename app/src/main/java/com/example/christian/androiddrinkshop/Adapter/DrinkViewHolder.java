@@ -2,17 +2,16 @@ package com.example.christian.androiddrinkshop.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.christian.androiddrinkshop.Interface.IItemClickListener;
 import com.example.christian.androiddrinkshop.R;
 
-public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class DrinkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     ImageView img_product;
-    TextView txt_menu_name;
+    TextView txt_drink_name, txt_price;
 
     IItemClickListener iItemClickListener;
 
@@ -20,11 +19,12 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
         this.iItemClickListener = iItemClickListener;
     }
 
-    public CategoryViewHolder(View itemView) {
+    public DrinkViewHolder(View itemView) {
         super(itemView);
 
-        img_product = (ImageView) itemView.findViewById(R.id.image_product);
-        txt_menu_name = (TextView) itemView.findViewById(R.id.txt_menu_name);
+        img_product = (ImageView)itemView.findViewById(R.id.image_product);
+        txt_drink_name = (TextView) itemView.findViewById(R.id.txt_drink_name);
+        txt_price = (TextView) itemView.findViewById(R.id.txt_price);
 
         itemView.setOnClickListener(this);
     }
@@ -33,5 +33,6 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
     public void onClick(View v) {
 
         iItemClickListener.onClick(v);
+
     }
 }
