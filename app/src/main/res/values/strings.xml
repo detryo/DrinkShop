@@ -39,5 +39,12 @@
     <string name="add_to_cart_ice_50">50%</string>
     <string name="add_to_cart_ice_30">30%</string>
     <string name="add_to_cart_ice_free">Free</string>
+    <string name="add_to_cart_topping">Topping</string>
+    <string name="confirm_add_to_cart_milk_tea">Milk Tea</string>
+    <string name="confirm_add_to_cart_3_75">£3.75</string>
+    <string name="confirm_add_to_cart_sugar_100">Sugar: 100%</string>
+    <string name="confirm_add_to_cart_ice_100">Ice: 100%</string>
+    <string name="confirm_add_to_cart_milk_cream">Milk Cream</string>
+    <string name="confirm_add_to_cart_topping_extra">Topping extra</string>
 
 </resources>

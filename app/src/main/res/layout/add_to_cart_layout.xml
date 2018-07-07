@@ -42,6 +42,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="50dp"
                     android:layout_height="30dp"
+                    app:initialNumber="1"
+                    app:finalNumber="100"
                     app:backGroundColor="@color/colorAccent"/>
 
             </RelativeLayout>
@@ -289,6 +291,29 @@
                 </RadioGroup>
 
             </RelativeLayout>
+
+            <!-- Group 4 Topping -->
+            <RelativeLayout
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="@string/add_to_cart_topping"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_topping"
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 
