@@ -20,11 +20,15 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.christian.androiddrinkshop.Adapter.CategoryAdapter;
+import com.example.christian.androiddrinkshop.Database.DataSource.CartRepository;
+import com.example.christian.androiddrinkshop.Database.Local.CartDataSource;
+import com.example.christian.androiddrinkshop.Database.Local.CartDatabase;
 import com.example.christian.androiddrinkshop.Model.Banner;
 import com.example.christian.androiddrinkshop.Model.Category;
 import com.example.christian.androiddrinkshop.Model.Drink;
 import com.example.christian.androiddrinkshop.Retrofit.IDrinkShopAPI;
 import com.example.christian.androiddrinkshop.Util.Common;
+import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +48,7 @@ public class HomeActivity extends AppCompatActivity
     IDrinkShopAPI mServices;
 
     RecyclerView lst_menu;
+    NotificationBadge badge;
 
     //RxJava#a
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -97,6 +102,15 @@ public class HomeActivity extends AppCompatActivity
 
         // Save newest Topping List
         getToppingList();
+
+        // Init Database
+        initDB();
+    }
+
+    private void initDB() {
+
+        Common.cartDatabase = CartDatabase.getInstance(this);
+        Common.cartRepository = CartRepository.getInstance(CartDataSource.getInstance(Common.cartDatabase.cartDAO()));
     }
 
     private void getToppingList() {
@@ -182,8 +196,31 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.menu_action_bar, menu);
+
+        View view = menu.findItem(R.id.cart_menu).getActionView();
+        badge = (NotificationBadge)view.findViewById(R.id.badge);
+        updateCartCount();
+
         return true;
+    }
+
+    private void updateCartCount() {
+
+        if (badge == null) return;;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (Common.cartRepository.countCartItem() == 0)
+                    badge.setVisibility(View.INVISIBLE);
+                else
+                {
+                    badge.setVisibility(View.VISIBLE);
+                    badge.setText(String.valueOf(Common.cartRepository.countCartItem()));
+                }
+            }
+        });
     }
 
     @Override
@@ -194,7 +231,7 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.cart_menu) {
             return true;
         }
 
@@ -224,5 +261,12 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        updateCartCount();
     }
 }

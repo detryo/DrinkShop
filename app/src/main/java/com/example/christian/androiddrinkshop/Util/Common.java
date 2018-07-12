@@ -1,5 +1,7 @@
 package com.example.christian.androiddrinkshop.Util;
 
+import com.example.christian.androiddrinkshop.Database.DataSource.CartRepository;
+import com.example.christian.androiddrinkshop.Database.Local.CartDatabase;
 import com.example.christian.androiddrinkshop.Model.Category;
 import com.example.christian.androiddrinkshop.Model.Drink;
 import com.example.christian.androiddrinkshop.Model.User;
@@ -27,6 +29,10 @@ public class Common {
     public static int sizeOfCup = -1; // -1 no chose (error), 0 : M,  : L
     public static int sugar = 1; //  -1 : no choose (error)
     public static int ice = -1;
+
+    // Database
+    public static CartDatabase cartDatabase;
+    public static CartRepository cartRepository;
 
     public static IDrinkShopAPI getAPI()
     {

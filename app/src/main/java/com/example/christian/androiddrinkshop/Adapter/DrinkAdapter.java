@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.christian.androiddrinkshop.Database.ModelDB.Cart;
 import com.example.christian.androiddrinkshop.Interface.IItemClickListener;
 import com.example.christian.androiddrinkshop.Model.Drink;
 import com.example.christian.androiddrinkshop.R;
@@ -220,7 +221,7 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkViewHolder>{
                     return;
                 }
 
-                showConfirmDialog(position, txt_count.getNumber(), Common.sizeOfCup, Common.sugar, Common.ice);
+                showConfirmDialog(position, txt_count.getNumber());
                 dialog.dismiss();
             }
         });
@@ -228,18 +229,18 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkViewHolder>{
         builder.show();
     }
 
-    private void showConfirmDialog(int position, String number, int sizeOfCup, int sugar, int ice) {
+    private void showConfirmDialog(int position, final String number) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View itemView = LayoutInflater.from(context).inflate(R.layout.confirm_add_to_cart_layout, null);
 
         // View
         ImageView img_product_dialog = (ImageView) itemView.findViewById(R.id.img_product);
-        TextView txt_product_dialog = (TextView) itemView.findViewById(R.id.txt_cart_product_name);
-        TextView txt_prduct_price = (TextView) itemView.findViewById(R.id.txt_cart_product_price);
+        final TextView txt_product_dialog = (TextView) itemView.findViewById(R.id.txt_cart_product_name);
+        final TextView txt_prduct_price = (TextView) itemView.findViewById(R.id.txt_cart_product_price);
         TextView txt_sugar = (TextView) itemView.findViewById(R.id.txt_sugar);
         TextView txt_icer = (TextView) itemView.findViewById(R.id.txt_ice);
-        TextView txt_topping_extra = (TextView) itemView.findViewById(R.id.txt_topping_extra);
+        final TextView txt_topping_extra = (TextView) itemView.findViewById(R.id.txt_topping_extra);
 
         // Set Data
         Picasso.with(context).load(drinkList.get(position).Link).into(img_product_dialog);
@@ -265,11 +266,34 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkViewHolder>{
 
         txt_topping_extra.setText(topping_final_comment);
 
+        final double finalPrice = price;
         builder.setNegativeButton("CONFIRM", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 dialog.dismiss();
+
+                try {
+
+                    // Add to SQLITE
+                    // Create new Cart item
+                    Cart cartItem = new Cart();
+                    cartItem.name = txt_product_dialog.getText().toString();
+                    cartItem.amount = Integer.parseInt(number);
+                    cartItem.ice = Common.ice;
+                    cartItem.sugar = Common.sugar;
+                    cartItem.price = finalPrice; // Pon price
+                    cartItem.toppingExtras = txt_topping_extra.getText().toString();
+
+                    // Add to DB
+                    Common.cartRepository.insertToCart(cartItem);
+
+                    Toast.makeText(context, "Save item to cart success", Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception ex)
+                {
+                    Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
