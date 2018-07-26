@@ -1,10 +1,14 @@
 package com.example.christian.androiddrinkshop;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.MessageQueue;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,14 +47,40 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1000;
+    private static final int REQUEST_PERMISSION = 1001;
     Button btn_continue;
 
     IDrinkShopAPI mService;
+
+    // CTRL + o
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode)
+        {
+            case REQUEST_PERMISSION:
+            {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED )
+                    Toast.makeText(this, "Permission graned", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+                break;
+                default:
+                    break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, REQUEST_PERMISSION);
 
         mService = Common.getAPI();
 
