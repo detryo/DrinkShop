@@ -1,6 +1,8 @@
 package com.example.christian.androiddrinkshop;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ import com.example.christian.androiddrinkshop.Retrofit.IDrinkShopAPI;
 import com.example.christian.androiddrinkshop.Util.Common;
 import com.example.christian.androiddrinkshop.Util.ProgressRequestBody;
 import com.example.christian.androiddrinkshop.Util.UploadCallBack;
+import com.facebook.accountkit.AccountKit;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.nex3z.notificationbadge.NotificationBadge;
 import com.squareup.picasso.Picasso;
@@ -291,13 +294,22 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
+    // Exit Application when click BACK button
+    boolean isBackButtonClicked  = false;
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if (isBackButtonClicked) {
+                super.onBackPressed();
+                return;
+            }
+            this.isBackButtonClicked = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -359,17 +371,33 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_sing_out) {
+            // Create confirm dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Exit Application");
+            builder.setMessage("Do you want to exitthis application ?");
 
-        } else if (id == R.id.nav_slideshow) {
+            builder.setNegativeButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-        } else if (id == R.id.nav_manage) {
+                    AccountKit.logOut();
+                    //Clear all Activity
+                    Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
-        } else if (id == R.id.nav_share) {
+            builder.setPositiveButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
-        } else if (id == R.id.nav_send) {
+            builder.show();
 
         }
 
@@ -381,8 +409,8 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
         updateCartCount();
+        isBackButtonClicked = false;
     }
 
     @Override
