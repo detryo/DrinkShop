@@ -29,8 +29,10 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.christian.androiddrinkshop.Adapter.CategoryAdapter;
 import com.example.christian.androiddrinkshop.Database.DataSource.CartRepository;
+import com.example.christian.androiddrinkshop.Database.DataSource.FavoriteRepository;
+import com.example.christian.androiddrinkshop.Database.Local.AppRoomDatabase;
 import com.example.christian.androiddrinkshop.Database.Local.CartDataSource;
-import com.example.christian.androiddrinkshop.Database.Local.CartDatabase;
+import com.example.christian.androiddrinkshop.Database.Local.FavoriteDataSource;
 import com.example.christian.androiddrinkshop.Model.Banner;
 import com.example.christian.androiddrinkshop.Model.Category;
 import com.example.christian.androiddrinkshop.Model.Drink;
@@ -220,8 +222,9 @@ public class HomeActivity extends AppCompatActivity
 
     private void initDB() {
 
-        Common.cartDatabase = CartDatabase.getInstance(this);
-        Common.cartRepository  = CartRepository.getInstance(CartDataSource.getInstance(Common.cartDatabase.cartDAO()));
+        Common.appRoomDatabase = AppRoomDatabase.getInstance(this);
+        Common.cartRepository  = CartRepository.getInstance(CartDataSource.getInstance(Common.appRoomDatabase.cartDAO()));
+        Common.favoriteRepository = FavoriteRepository.getInstance(FavoriteDataSource.getInstance(Common.appRoomDatabase.favoriteDAO()));
     }
 
     private void getToppingList() {
@@ -399,6 +402,11 @@ public class HomeActivity extends AppCompatActivity
 
             builder.show();
 
+        }
+
+        else if (id == R.id.nav_favorite)
+        {
+            startActivity(new Intent(HomeActivity.this, FavoriteListActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

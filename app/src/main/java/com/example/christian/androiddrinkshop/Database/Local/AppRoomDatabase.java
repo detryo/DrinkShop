@@ -6,17 +6,19 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.example.christian.androiddrinkshop.Database.ModelDB.Cart;
+import com.example.christian.androiddrinkshop.Database.ModelDB.Favorite;
 
-@Database(entities = {Cart.class}, version = 1)
-public abstract class CartDatabase extends RoomDatabase {
+@Database(entities = {Cart.class, Favorite.class}, version = 1)
+public abstract class AppRoomDatabase extends RoomDatabase {
 
     public abstract CartDAO cartDAO();
-    private static CartDatabase instance;
+    public abstract FavoriteDAO favoriteDAO();
+    private static AppRoomDatabase instance;
 
-    public static CartDatabase getInstance(Context context)
+    public static AppRoomDatabase getInstance(Context context)
     {
         if (instance == null)
-            instance = Room.databaseBuilder(context, CartDatabase.class, "DrinkShopDB")
+            instance = Room.databaseBuilder(context, AppRoomDatabase.class, "DrinkShopDB")
                     .allowMainThreadQueries()
                     .build();
         return instance;
