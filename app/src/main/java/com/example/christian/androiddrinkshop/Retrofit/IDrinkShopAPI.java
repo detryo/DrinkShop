@@ -48,4 +48,7 @@ public interface IDrinkShopAPI {
     @Multipart
     @POST("upload.php")
     Call<String> uploadFile(@Part MultipartBody.Part phone, @Part MultipartBody.Part file);
+
+    @GET("getalldrinks.php")
+    io.reactivex.Observable<List<Drink>> getAllDrinks();
 }
