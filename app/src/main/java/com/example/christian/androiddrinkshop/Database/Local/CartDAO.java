@@ -23,6 +23,9 @@ public interface CartDAO {
     @Query("SELECT COUNT(*) from Cart ")
     int countCartItem();
 
+    @Query("SELECT SUM(Price) from Cart ")
+    float sumPrice();
+
     @Query("DELETE FROM Cart")
     void emptyCart();
 
